@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+</head>
+<body>
+<form action="#" th:object="${newChatMessage}" th:action="@{'/chat'}" method="POST">
+    <label for="username">Username:</label>
+    <input id="username" type="text" th:field="*{userName}"/>
+    <label for="messageText">Message Text:</label>
+    <input id="messageText" type="text" th:field="*{text}">
+    <label for="messageType">Message Type: </label>
+    <select id="messageType" th:field="*{type}" >
+        <option th:each="type : ${allMessagesTypes}" th:value="${type}" th:text="${type}">Say</option>
+    </select>
+    <input type="submit">
+    <h2>history</h2>
+    <div th:if="${#lists.size(history) > 0}" th:each="msg : ${history}">
+        <div>
+            <span th:text="${msg.userName}"></span> :
+            <span th:if="${msg.type == 'Shout'}" style="text-transform: uppercase;" th:text="${msg.text}"></span>
+            <span th:if="${msg.type == 'Whisper'}" style="text-transform: lowercase;" th:text="${msg.text}"></span>
+            <span th:if="${msg.type == 'Say'}"  th:text="${msg.text}"></span>
+        </div>
+
+    </div>
+    <div th:unless="${#lists.size(history) > 0}">no history</div>
+
+</form>
+
+</body>
+</html>
