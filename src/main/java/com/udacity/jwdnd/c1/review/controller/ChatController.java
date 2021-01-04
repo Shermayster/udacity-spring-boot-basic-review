@@ -3,6 +3,8 @@ package com.udacity.jwdnd.c1.review.controller;
 import com.udacity.jwdnd.c1.review.model.ChatForm;
 import com.udacity.jwdnd.c1.review.model.ChatMessage;
 import com.udacity.jwdnd.c1.review.service.MessageService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,7 @@ public class ChatController {
     private MessageService messageService;
     public ChatController(MessageService messageService) {
         this.messageService = messageService;
+
     }
 
 
@@ -29,8 +32,9 @@ public class ChatController {
 
     @PostMapping
     public String addMessage(@ModelAttribute("newChatMessage") ChatForm chatForm, Model model) {
-        ChatMessage newMsg = new ChatMessage(chatForm.getText(), chatForm.getType(), chatForm.getUserName());
-        this.messageService.addMessage(newMsg);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        this.messageService.addMessage(chatForm.getMessageText(), username);
         model.addAttribute("history", this.messageService.getChatHistory());
         this.clearForm(chatForm);
         return "chat";
@@ -42,8 +46,6 @@ public class ChatController {
     }
 
     private void clearForm(ChatForm chatForm) {
-        chatForm.setText("");
-        chatForm.setType("");
-        chatForm.setUserName("");
+       chatForm.setMessageText("");
     }
 }

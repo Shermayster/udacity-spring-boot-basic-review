@@ -5,23 +5,20 @@
     <title>Chat</title>
 </head>
 <body>
+
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
 <form action="#" th:object="${newChatMessage}" th:action="@{'/chat'}" method="POST">
-    <label for="username">Username:</label>
-    <input id="username" type="text" th:field="*{userName}"/>
     <label for="messageText">Message Text:</label>
-    <input id="messageText" type="text" th:field="*{text}">
-    <label for="messageType">Message Type: </label>
-    <select id="messageType" th:field="*{type}" >
-        <option th:each="type : ${allMessagesTypes}" th:value="${type}" th:text="${type}">Say</option>
-    </select>
+    <input id="messageText" type="text" th:field="*{messageText}">
     <input type="submit">
+    
     <h2>history</h2>
     <div th:if="${#lists.size(history) > 0}" th:each="msg : ${history}">
         <div>
-            <span th:text="${msg.userName}"></span> :
-            <span th:if="${msg.type == 'Shout'}" style="text-transform: uppercase;" th:text="${msg.text}"></span>
-            <span th:if="${msg.type == 'Whisper'}" style="text-transform: lowercase;" th:text="${msg.text}"></span>
-            <span th:if="${msg.type == 'Say'}" style="text-transform: uppercase;" th:text="${msg.text}"></span>
+            <span th:text="${msg.username}"></span> :
+            <span th:text="${msg.messageText}"></span>
         </div>
 
     </div>
