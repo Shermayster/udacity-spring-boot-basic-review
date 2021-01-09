@@ -7,22 +7,22 @@
 <body>
 
     <form th:action="@{/logout}" method="post">
-        <input type="submit" value="Sign Out"/>
+        <input id="sign-out" type="submit" value="Sign Out"/>
     </form>
 <form action="#" th:object="${newChatMessage}" th:action="@{'/chat'}" method="POST">
     <label for="messageText">Message Text:</label>
     <input id="messageText" type="text" th:field="*{messageText}">
-    <input type="submit">
+    <input id="submitButton" type="submit">
     
     <h2>history</h2>
     <div th:if="${#lists.size(history) > 0}" th:each="msg : ${history}">
-        <div>
+        <div class="chat-message-container">
             <span th:text="${msg.username}"></span> :
             <span th:text="${msg.messageText}"></span>
         </div>
 
     </div>
-    <div th:unless="${#lists.size(history) > 0}">no history</div>
+    <div id="no-history" th:unless="${#lists.size(history) > 0}">no history</div>
 
 </form>
 
